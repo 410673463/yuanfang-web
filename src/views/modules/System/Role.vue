@@ -265,7 +265,6 @@ export default {
     },
     // 树节点选择监听
     handleMenuCheckChange(data, check, subCheck) {
-      debugger;
       // if (check) {
       //   // 节点选中时同步选中父节点
       //   let parentId = data.parentId;

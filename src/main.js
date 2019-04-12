@@ -15,7 +15,7 @@ import router from './router'
 
 import i18n from './lang' // Internationalization
 import './errorLog' // error log
-import './permission' // permission control
+//import './permission' // permission control
 //import './mock' // simulation data
 import 'font-awesome/css/font-awesome.min.css'
 import * as filters from './filters' // global filters

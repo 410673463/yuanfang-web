@@ -176,7 +176,6 @@ export default {
     },
     // 显示编辑界面
     handleEdit: function(row) {
-      debugger;
       this.dialogVisible = true;
       Object.assign(this.dataForm, row);
       console.log(this.dataForm);

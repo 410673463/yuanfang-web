@@ -195,7 +195,7 @@ import KtButton from "@/views/Core/KtButton";
 import TableTreeColumn from "@/views/Core/TableTreeColumn";
 import PopupTreeInput from "@/components/PopupTreeInput";
 import FaIconTooltip from "@/components/FaIconTooltip";
-import { findMenuTree, save, batchDelete, findNavTree } from "@/api/menu.js";
+import { findMenuTree, save, batchDelete } from "@/api/menu.js";
 import request from '@/utils/request'
 export default {
   components: {

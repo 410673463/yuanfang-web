@@ -249,24 +249,22 @@ export default {
               };
               userRoles.push(userRole);
             }
-            params.userRoles = userRoles;
-            debugger
+            params.userRoles = userRoles
            save(params).then(res => {
-              this.editLoading = false;
-              debugger
+              this.editLoading = false
               if (res.status == 200) {
-                this.$message({ message: "操作成功", type: "success" });
-                this.dialogVisible = false;
-                this.$refs["dataForm"].resetFields();
+                this.$message({ message: "操作成功", type: "success" })
+                this.dialogVisible = false
+                this.$refs["dataForm"].resetFields()
               } else {
                 this.$message({
                   message: "操作失败, " + res.msg,
                   type: "error"
-                });
+                })
               }
               this.findPage(null);
-            });
-          });
+            })
+          })
         }
       });
     },

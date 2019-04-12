@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {getToken} from '../utils/auth'
+import { getToken } from '../utils/auth'
 import router from '@/router'
 //import QS from 'qs'
 // 使用vuex做全局loading时使用
@@ -21,7 +21,7 @@ export default function $axios(url, method, params) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-        const token = getToken()
+        const token = sessionStorage.getItem('AUTH-TOKEN')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
@@ -35,9 +35,9 @@ export default function $axios(url, method, params) {
           router.replace({
             path: '/login',
             query: {
-                redirect: router.currentRoute.fullPath
+              redirect: router.currentRoute.fullPath
             }
-        })
+          })
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
@@ -121,9 +121,9 @@ export default function $axios(url, method, params) {
               router.replace({
                 path: '/login',
                 query: {
-                    redirect: router.currentRoute.fullPath
+                  redirect: router.currentRoute.fullPath
                 }
-            })
+              })
               break
             case 403:
               err.message = '拒绝访问'
@@ -156,6 +156,7 @@ export default function $axios(url, method, params) {
           }
         }
         console.error(err)
+        
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )
