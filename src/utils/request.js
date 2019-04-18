@@ -1,15 +1,13 @@
 import axios from 'axios'
-import { getToken } from '../utils/auth'
-import router from '@/router'
-//import QS from 'qs'
-// 使用vuex做全局loading时使用
-// import store from '@/store'
+import router from '../router/index.js'
+import { Message } from 'element-ui'
+
 
 export default function $axios(url, method, params) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: process.env.BASE_API,
-      timeout: 100000 * 12,
+      timeout: 10000 * 1,// 10s
       // transformRequest: [// // 对 请求参数 进行任意转换处理
       //   function(params) {
       //     return QS.stringify(params)
@@ -22,16 +20,10 @@ export default function $axios(url, method, params) {
     instance.interceptors.request.use(
       config => {
         const token = sessionStorage.getItem('AUTH-TOKEN')
-        // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
-        // console.log(store.state.loading)
-        // console.log('准备发送请求...')
-        // 2. 带上token
         if (token) {
           config.headers.AuthorizationToken = token
-          //config.headers.token = token
         } else {
           // 重定向到登录页面
-          //router.push('/login')
           router.replace({
             path: '/login',
             query: {
@@ -40,21 +32,19 @@ export default function $axios(url, method, params) {
           })
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
-        if (config.method === 'post') {
-          // if (config.data.__proto__ === FormData.prototype
-          //   || config.url.endsWith('path')
-          //   || config.url.endsWith('mark')
-          //   || config.url.endsWith('patchs')
-          // ) {
+        //if (config.method === 'post') {
+        // if (config.data.__proto__ === FormData.prototype
+        //   || config.url.endsWith('path')
+        //   || config.url.endsWith('mark')
+        //   || config.url.endsWith('patchs')
+        // ) {
 
-          // } else {
-          // config.data = qs.stringify(config.data)
-          // }
-        }
-
+        // } else {
+        // config.data = qs.stringify(config.data)
+        // }
+        // }
         return config
       },
-
       error => {
         // 请求错误时
         console.log('request:', error)
@@ -111,6 +101,8 @@ export default function $axios(url, method, params) {
         return data
       },
       err => {
+        debugger
+        console.log(err)
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
@@ -118,6 +110,7 @@ export default function $axios(url, method, params) {
               break
             case 401:
               err.message = '未授权，请登录'
+              sessionStorage.removeItem('AUTH-TOKEN')
               router.replace({
                 path: '/login',
                 query: {
@@ -154,9 +147,20 @@ export default function $axios(url, method, params) {
               break
             default:
           }
+          console.log(err)
+        }else{
+          Message.error('服务器出错')
+          debugger
+          sessionStorage.removeItem('AUTH-TOKEN')
+          console.log(router)
+          router.replace({
+            path: '/login',
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
+          })
         }
-        console.error(err)
-        
+       
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )

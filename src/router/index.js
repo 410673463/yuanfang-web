@@ -75,7 +75,31 @@ export const constantRoutes = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
-  }
+  },
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'ErrorPages',
+    meta: {
+      title: 'errorPages',
+      icon: '404'
+    },
+    children: [
+      {
+        path: '401',
+        component: () => import('@/views/errorPage/401'),
+        name: 'Page401',
+        meta: { title: 'page401', noCache: true }
+      },
+      {
+        path: '404',
+        component: () => import('@/views/errorPage/404'),
+        name: 'Page404',
+        meta: { title: 'page404', noCache: true }
+      }
+    ]
+  },
 ]
 
 export const asyncRoutes = []
@@ -123,19 +147,19 @@ function addDynamicMenuAndRoutes(to, from) {
       // 添加动态路由
       let dynamicRoutes = addDynamicRoutes(res.data)
       //dynamicRoutes.push(sys)
-      console.log(dynamicRoutes)
       router.addRoutes(dynamicRoutes)
-      store.commit('SET_ROUTES',dynamicRoutes)
-      console.log(router)
+      store.commit('SET_ROUTES', dynamicRoutes)
       // 保存加载状态
       store.commit('menuRouteLoaded', true)
       // 保存菜单树
       store.commit('setNavTree', res.data)
     }).then(res => {
-      // findPermissions({ 'name': userName }).then(res => {
-      //   // 保存用户权限标识集合
-      //   store.commit('setPerms', res.data)
-      // })
+      findPermissions().then(res => {
+        // 保存用户权限标识集合
+        console.log('用户按钮权限标识')
+        console.log(res)
+        store.commit('SET_PERMS', res.data)
+      })
     }).catch(function (res) {
       console.log(res)
     })
@@ -180,7 +204,6 @@ function addDynamicRoutes(menuList = [], routes = []) {
       try {
         // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
         // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
-        debugger
         let array = menuList[i].url.split('/')
         let url = ''
         for (let i = 0; i < array.length; i++) {

@@ -88,7 +88,7 @@
         :render-content="renderContent"
         v-loading="menuLoading"
         element-loading-text="拼命加载中"
-        :check-strictly="false"
+        :check-strictly="checkStrictly"
         @check-change="handleMenuCheckChange"
       ></el-tree>
       <div style="float:left;padding-left:24px;padding-top:12px;padding-bottom:4px;">
@@ -157,7 +157,7 @@ export default {
       ],
       pageRequest: { pageNum: 1, pageSize: 10 },
       pageResult: {},
-
+      checkStrictly: false,
       operation: false, // true:新增, false:编辑
       dialogVisible: false, // 新增编辑界面是否显示
       editLoading: false,
@@ -258,13 +258,21 @@ export default {
         return;
       }
       this.selectRole = val.val;
+      this.checkStrictly = true
       findRoleMenus({ roleId: val.val.id }).then(res => {
         this.currentRoleMenus = res.data;
-        this.$refs.menuTree.setCheckedNodes(res.data);
+        let idArr = [];
+        //this.$refs.menuTree.setCheckedNodes(res.data);
+        res.data.forEach(item => {
+          idArr.push(item.id);
+        });
+        this.$refs.menuTree.setCheckedKeys(idArr, false);
+        this.checkStrictly = false
       });
     },
     // 树节点选择监听
     handleMenuCheckChange(data, check, subCheck) {
+      // 
       // if (check) {
       //   // 节点选中时同步选中父节点
       //   let parentId = data.parentId;
@@ -325,9 +333,21 @@ export default {
         let roleMenu = { roleId: roleId, menuId: checkedNodes[i].id };
         roleMenus.push(roleMenu);
       }
+       this.checkStrictly = true
       saveRoleMenus(roleMenus).then(res => {
         if (res.status === 200) {
           this.$message({ message: "操作成功", type: "success" });
+          //重新拉去选中角色的权限列表
+          findRoleMenus({ roleId: roleId }).then(res => {
+            this.currentRoleMenus = res.data;
+            let idArr = [];
+            //this.$refs.menuTree.setCheckedNodes(res.data);
+            res.data.forEach(item => {
+              idArr.push(item.id);
+            });
+            this.$refs.menuTree.setCheckedKeys(idArr, false);
+            this.checkStrictly = false
+          });
         } else {
           this.$message({ message: "操作失败, " + res.msg, type: "error" });
         }
