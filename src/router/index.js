@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import store from '../store/index'
 import { findNavTree } from '../api/menu'
 import { findPermissions } from '../api/user'
+
 Vue.use(Router)
 
 /* Layout */
@@ -16,13 +17,13 @@ import sys from './sys/sys'
  **/
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
     roles: ['admin','editor']    will control the page roles (you can set multiple roles)
     title: 'title'               the name show in sub-menu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
@@ -30,7 +31,7 @@ import sys from './sys/sys'
     breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
     affix: true                  if true, the tag will affix in the tags-view
   }
-**/
+ **/
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -99,7 +100,7 @@ export const constantRoutes = [
         meta: { title: 'page404', noCache: true }
       }
     ]
-  },
+  }
 ]
 
 export const asyncRoutes = []
@@ -110,12 +111,10 @@ const router = new Router({
   routes: constantRoutes
 })
 
-
-
 router.beforeEach((to, from, next) => {
   // 登录界面登录成功之后，会把用户信息保存在会话
   // 存在时间为会话生命周期，页面关闭即失效。
-  let token = sessionStorage.getItem('AUTH-TOKEN')
+  const token = sessionStorage.getItem('AUTH-TOKEN')
   if (to.path === '/login') {
     // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
     if (token) {
@@ -134,9 +133,10 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
 /**
-* 加载动态菜单和路由
-*/
+ * 加载动态菜单和路由
+ */
 function addDynamicMenuAndRoutes(to, from) {
   if (store.state.app.menuRouteLoaded) {
     console.log('动态菜单和路由已经存在.')
@@ -145,8 +145,9 @@ function addDynamicMenuAndRoutes(to, from) {
   findNavTree()
     .then(res => {
       // 添加动态路由
-      let dynamicRoutes = addDynamicRoutes(res.data)
-      //dynamicRoutes.push(sys)
+
+      const dynamicRoutes = addDynamicRoutes(res.data)
+      // dynamicRoutes.push(sys)
       router.addRoutes(dynamicRoutes)
       store.commit('SET_ROUTES', dynamicRoutes)
       // 保存加载状态
@@ -155,25 +156,26 @@ function addDynamicMenuAndRoutes(to, from) {
       store.commit('setNavTree', res.data)
     }).then(res => {
       findPermissions().then(res => {
-        // 保存用户权限标识集合
+      // 保存用户权限标识集合
         console.log('用户按钮权限标识')
         console.log(res)
         store.commit('SET_PERMS', res.data)
       })
-    }).catch(function (res) {
+    }).catch(function(res) {
       console.log(res)
     })
 }
+
 /**
-* 添加动态(菜单)路由
-* @param {*} menuList 菜单列表
-* @param {*} routes 递归创建的动态(菜单)路由
-*/
+ * 添加动态(菜单)路由
+ * @param {*} menuList 菜单列表
+ * @param {*} routes 递归创建的动态(菜单)路由
+ */
 function addDynamicRoutes(menuList = [], routes = []) {
   var temp = []
   var route
   for (var i = 0; i < menuList.length; i++) {
-    if (menuList[i].children && menuList[i].children.length >= 1) {
+    if (menuList[i].children && menuList[i].children.length >= 1) { // 有子菜单
       temp = temp.concat(menuList[i].children)
       route = {
         path: menuList[i].url,
@@ -187,11 +189,12 @@ function addDynamicRoutes(menuList = [], routes = []) {
         }
       }
       routes.push(route)
-    } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
+    } else if (menuList[i].url && /\S/.test(menuList[i].url)) { // 最底层
       menuList[i].url = menuList[i].url.replace(/^\//, '')
       // 创建路由配置
+      const array = menuList[i].url.split('/')
       route = {
-        path: menuList[i].url,
+        path: array[1],
         component: null,
         name: menuList[i].name,
         children: [],
@@ -204,17 +207,21 @@ function addDynamicRoutes(menuList = [], routes = []) {
       try {
         // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
         // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
-        let array = menuList[i].url.split('/')
         let url = ''
         for (let i = 0; i < array.length; i++) {
           url += array[i].substring(0, 1).toUpperCase() + array[i].substring(1) + '/'
         }
         url = url.substring(0, url.length - 1)
+        debugger
         route['component'] = resolve => require([`@/views/modules/${url}`], resolve)
-      } catch (e) { console.log(e) }
+      } catch (e) {
+        console.log(e)
+      }
+      debugger
       routes[0].children.push(route)
     }
   }
+  debugger
   if (temp.length >= 1) {
     addDynamicRoutes(temp, routes)
   } else {
@@ -225,6 +232,4 @@ function addDynamicRoutes(menuList = [], routes = []) {
   return routes
 }
 
-
-
-export default router 
+export default router

@@ -9,7 +9,7 @@ const app = {
     device: 'desktop',
     language: Cookies.get('language') || 'en',
     size: Cookies.get('size') || 'medium',
-    menuRouteLoaded:false    // 菜单和路由是否已经加载
+    menuRouteLoaded: false // 菜单和路由是否已经加载
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -37,9 +37,9 @@ const app = {
       state.size = size
       Cookies.set('size', size)
     },
-    menuRouteLoaded(state, menuRouteLoaded){  // 改变菜单和路由的加载状态
-      state.menuRouteLoaded = menuRouteLoaded;
-  }
+    menuRouteLoaded(state, menuRouteLoaded) { // 改变菜单和路由的加载状态
+      state.menuRouteLoaded = menuRouteLoaded
+    }
   },
   actions: {
     toggleSideBar({ commit }) {

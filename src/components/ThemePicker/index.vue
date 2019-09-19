@@ -1,10 +1,10 @@
 <template>
   <el-color-picker
+    v-model="theme"
     class="theme-picker"
     popper-class="theme-picker-dropdown"
-    v-model="theme" 
-    :size="size">
-  </el-color-picker>
+    :size="size"
+  />
 </template>
 
 <script>
@@ -29,13 +29,6 @@ export default {
       chalk: '', // content of theme-chalk css
       theme: ORIGINAL_THEME,
       showSuccess: true // 是否弹出换肤成功消息
-    }
-  },
-  mounted() {
-    if(this.default != null) {
-      this.theme = this.default
-      this.$emit('onThemeChange', this.theme)
-      this.showSuccess = false
     }
   },
   watch: {
@@ -78,10 +71,10 @@ export default {
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
-      
+
       // 响应外部操作
       this.$emit('onThemeChange', val)
-      if(this.showSuccess) {
+      if (this.showSuccess) {
         this.$message({
           message: '换肤成功',
           type: 'success'
@@ -89,6 +82,13 @@ export default {
       } else {
         this.showSuccess = true
       }
+    }
+  },
+  mounted() {
+    if (this.default != null) {
+      this.theme = this.default
+      this.$emit('onThemeChange', this.theme)
+      this.showSuccess = false
     }
   },
   methods: {

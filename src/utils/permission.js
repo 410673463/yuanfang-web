@@ -30,7 +30,7 @@ export default function checkPermission(value) {
  * @param perms
  */
 export function hasPermission(perms) {
-  let hasPermission = true
+  const hasPermission = true
   // const permissions = store.state.user.perms
   // for (let i = 0, len = permissions.length; i < len; i++) {
   //   if (permissions[i] === perms) {

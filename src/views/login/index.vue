@@ -10,12 +10,12 @@
     >
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language"/>
+        <lang-select class="set-language" />
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <i class="fa fa-user" aria-hidden="true"/>
+          <i class="fa fa-user" aria-hidden="true" />
         </span>
         <el-input
           ref="username"
@@ -29,7 +29,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <i class="fa fa-key" aria-hidden="true"/>
+          <i class="fa fa-key" aria-hidden="true" />
         </span>
         <el-input
           ref="password"
@@ -44,7 +44,7 @@
           <i
             :class=" passwordType === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash'"
             aria-hidden="true"
-          ></i>
+          />
         </span>
       </el-form-item>
 
@@ -78,57 +78,57 @@
       <br>
       <br>
       <br>
-      <social-sign/>
+      <social-sign />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-import LangSelect from "@/components/LangSelect";
+import { validUsername } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
 // import SocialSign from './socialsignin'
-import { loginByUsername } from "@/api/login.js";
+import { loginByUsername } from '@/api/login.js'
 export default {
-  name: "Login",
+  name: 'Login',
   components: { LangSelect },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+        callback(new Error('Please enter the correct user name'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error('The password can not be less than 6 digits'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loginForm: {
-        username: "admin",
-        password: "admin1234"
+        username: 'admin',
+        password: 'admin1234'
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
+          { required: true, trigger: 'blur', validator: validatePassword }
         ]
       },
-      passwordType: "password",
+      passwordType: 'password',
       loading: false,
       showDialog: false,
       redirect: undefined
-    };
+    }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
@@ -137,10 +137,10 @@ export default {
     // window.addEventListener('hashchange', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === "") {
-      this.$refs.username.focus();
-    } else if (this.loginForm.password === "") {
-      this.$refs.password.focus();
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
     }
   },
   destroyed() {
@@ -148,53 +148,53 @@ export default {
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-       
+          this.loading = true
+
           loginByUsername(
             this.loginForm.username,
             this.loginForm.password
           ).then(res => {
-            //返回token
-            let status = res.status;
+            // 返回token
+            const status = res.status
             if (status === 200) {
-              let token = res.data;
-              //返回token
-              //保存token
-              sessionStorage.setItem('AUTH-TOKEN', token);
+              const token = res.data
+              // 返回token
+              // 保存token
+              sessionStorage.setItem('AUTH-TOKEN', token)
               this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
-              this.$router.push({ path: this.redirect || "/" });
+              this.$router.push({ path: this.redirect || '/' })
             } else {
-              this.loading = false;
+              this.loading = false
               if (status === -401) {
                 this.$message({
                   message: res.msg,
-                  type: "warning"
-                });
+                  type: 'warning'
+                })
               } else {
                 this.$message({
-                  message: "登录失败,返回状态码:" + res.status,
-                  type: "warning"
-                });
+                  message: '登录失败,返回状态码:' + res.status,
+                  type: 'warning'
+                })
               }
             }
-          });
+          })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)
@@ -215,7 +215,7 @@ export default {
       // }
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

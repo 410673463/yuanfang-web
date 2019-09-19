@@ -2,7 +2,7 @@
   <div v-if="errorLogs.length>0">
     <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible=true">
       <el-button style="padding: 8px 10px;" size="small" type="danger">
-        <i class="fa fa-bug" aria-hidden="true"></i>
+        <i class="fa fa-bug" aria-hidden="true" />
       </el-button>
     </el-badge>
 

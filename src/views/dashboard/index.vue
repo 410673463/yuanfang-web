@@ -25,7 +25,7 @@ export default {
   created() {
     console.log('roles:')
     console.log(this.roles)
-    debugger
+
     // if (!this.roles.includes('admin')) {
     //   this.currentRole = 'editorDashboard'
     // }

@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card" style="margin-top:40px;">
       <div slot="header" class="clearfix">
-        <i class="fa fa-globe" aria-hidden="true"></i>
+        <i class="fa fa-globe" aria-hidden="true" />
         <span style="margin-left:10px;">{{ $t('i18nView.title') }}</span>
       </div>
       <div>

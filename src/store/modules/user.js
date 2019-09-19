@@ -15,7 +15,7 @@ const user = {
     setting: {
       articlePlatform: []
     },
-    perms: [],  // 用户权限标识集合
+    perms: [] // 用户权限标识集合
   },
 
   mutations: {
@@ -46,8 +46,8 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
-    SET_PERMS: (state, perms) => {  // 用户权限标识集合
-      state.perms = perms;
+    SET_PERMS: (state, perms) => { // 用户权限标识集合
+      state.perms = perms
     }
   },
 
@@ -74,7 +74,6 @@ const user = {
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          
           if (!response.data) {
             reject('Verification failed, please login again.')
           }
@@ -89,8 +88,8 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_USERID', data.userId)
           commit('SET_INTRODUCTION', data.introduction)
-          sessionStorage.setItem("USER_ID", data.userId);
-          
+          sessionStorage.setItem('USER_ID', data.userId)
+
           resolve(response)
         }).catch(error => {
           reject(error)

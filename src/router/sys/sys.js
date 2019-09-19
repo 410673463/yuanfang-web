@@ -1,4 +1,3 @@
-
 /* Layout */
 import Layout from '@/views/layout/Layout'
 
@@ -21,16 +20,16 @@ const sysRouters = {
       meta: { title: '机构管理', icon: 'fa fa-building' }
     },
     {
-      path:'user',
-      component:()=>import('@/views/modules/System/User'),
-      name:'user',
-      meta:{title:'账号管理',icon:'fa fa-users'}
+      path: 'user',
+      component: () => import('@/views/modules/System/User'),
+      name: 'user',
+      meta: { title: '账号管理', icon: 'fa fa-users' }
     },
     {
-      path:'role',
-      component:()=>import('@/views/modules/System/Role'),
-      name:'role',
-      meta:{title:'角色管理',icon:'fa fa-user-secret'}
+      path: 'role',
+      component: () => import('@/views/modules/System/Role'),
+      name: 'role',
+      meta: { title: '角色管理', icon: 'fa fa-user-secret' }
     }
   ]
 

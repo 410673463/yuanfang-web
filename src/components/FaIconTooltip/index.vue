@@ -1,4 +1,4 @@
-  
+
 <template>
   <el-tooltip class="tooltip" placement="top" effect="light">
     <div slot="content">
@@ -8,7 +8,7 @@
       <p>2.查找到需要的图标,点击查看。</p>
       <p>3.复制图片样式到此处。</p>
       <p>示例：fa fa-home fa-lg</p></div>
-    <i class="el-icon-warning"></i>
+    <i class="el-icon-warning" />
   </el-tooltip>
 </template>
 
@@ -16,15 +16,15 @@
 export default {
   data() {
     return {
-    };
-  },
-  methods: {
-
+    }
   },
   mounted() {
 
+  },
+  methods: {
+
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

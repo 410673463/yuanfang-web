@@ -49,7 +49,7 @@
 <script>
 import path from 'path'
 import { deepClone } from '@/utils'
-import { save, batchDelete, findPage, findAll, findRoleMenus,saveRoleMenus } from '@/api/role'
+import { save, batchDelete, findPage, findAll, findRoleMenus, saveRoleMenus } from '@/api/role'
 import i18n from '@/lang'
 
 const defaultRole = {
@@ -87,12 +87,14 @@ export default {
   methods: {
     async getRoutes() {
       const res = await getRoutes()
+
       this.serviceRoutes = res.data
       const routes = this.generateRoutes(res.data)
       this.routes = this.i18n(routes)
     },
     async getRoles() {
       const res = await getRoles()
+
       this.rolesList = res.data
     },
     i18n(routes) {

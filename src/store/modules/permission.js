@@ -9,7 +9,7 @@ const permission = {
       state.addRoutes = routes
       state.routes = routes
     }
-  },
+  }
 }
 
 export default permission

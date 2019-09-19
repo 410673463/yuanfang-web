@@ -2,12 +2,11 @@ import axios from 'axios'
 import router from '../router/index.js'
 import { Message } from 'element-ui'
 
-
 export default function $axios(url, method, params) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: process.env.BASE_API,
-      timeout: 10000 * 1,// 10s
+      timeout: 10000 * 1// 10s
       // transformRequest: [// // 对 请求参数 进行任意转换处理
       //   function(params) {
       //     return QS.stringify(params)
@@ -15,7 +14,7 @@ export default function $axios(url, method, params) {
       // ]
     })
     // 设置post请求头
-    //instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+    // instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
     // request 拦截器
     instance.interceptors.request.use(
       config => {
@@ -32,7 +31,7 @@ export default function $axios(url, method, params) {
           })
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
-        //if (config.method === 'post') {
+        // if (config.method === 'post') {
         // if (config.data.__proto__ === FormData.prototype
         //   || config.url.endsWith('path')
         //   || config.url.endsWith('mark')
@@ -101,7 +100,6 @@ export default function $axios(url, method, params) {
         return data
       },
       err => {
-        debugger
         console.log(err)
         if (err && err.response) {
           switch (err.response.status) {
@@ -148,9 +146,9 @@ export default function $axios(url, method, params) {
             default:
           }
           console.log(err)
-        }else{
+        } else {
           Message.error('服务器出错')
-          debugger
+
           sessionStorage.removeItem('AUTH-TOKEN')
           console.log(router)
           router.replace({
@@ -160,7 +158,7 @@ export default function $axios(url, method, params) {
             }
           })
         }
-       
+
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )

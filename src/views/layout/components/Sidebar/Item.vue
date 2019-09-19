@@ -17,7 +17,7 @@ export default {
     const vnodes = []
 
     if (icon) {
-      vnodes.push(<i class={icon} aria-hidden="true"></i>)
+      vnodes.push(<i class={icon} aria-hidden='true'></i>)
     }
 
     if (title) {

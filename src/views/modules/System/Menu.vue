@@ -23,11 +23,11 @@
       style="width: 100%;"
       element-loading-text="$t('')"
     >
-      <el-table-column prop="id" header-align="center" align="center" width="80" label="ID"/>
-      <table-tree-column prop="name" header-align="center" tree-key="id" width="150" label="名称"/>
+      <el-table-column prop="id" header-align="center" align="center" width="80" label="ID" />
+      <table-tree-column prop="name" header-align="center" tree-key="id" width="150" label="名称" />
       <el-table-column header-align="center" align="center" label="图标">
         <template slot-scope="scope">
-          <i :class="scope.row.icon || ''"/>
+          <i :class="scope.row.icon || ''" />
         </template>
       </el-table-column>
       <el-table-column prop="type" header-align="center" align="center" label="类型">
@@ -60,7 +60,7 @@
         :show-overflow-tooltip="true"
         label="授权标识"
       />
-      <el-table-column prop="orderNum" header-align="center" align="center" label="排序"/>
+      <el-table-column prop="orderNum" header-align="center" align="center" label="排序" />
       <el-table-column
         fixed="right"
         header-align="center"
@@ -107,7 +107,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item :label="menuTypeList[dataForm.type] + '名称'" prop="name">
-          <el-input v-model="dataForm.name" :placeholder="menuTypeList[dataForm.type] + '名称'"/>
+          <el-input v-model="dataForm.name" :placeholder="menuTypeList[dataForm.type] + '名称'" />
         </el-form-item>
         <el-form-item label="上级菜单" prop="parentName">
           <popup-tree-input
@@ -127,7 +127,7 @@
         <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="url">
           <el-row>
             <el-col :span="22">
-              <el-input v-model="dataForm.url" placeholder="菜单路由"/>
+              <el-input v-model="dataForm.url" placeholder="菜单路由" />
             </el-col>
             <el-col :span="2" class="icon-list__tips">
               <el-tooltip placement="top" effect="light" style="padding: 10px;">
@@ -137,7 +137,7 @@
                   <p>2.嵌套外部网页，如通过菜单打开百度网页，此处填写 http://www.baidu.com，http:// 不可省略。</p>
                   <p>示例：用户管理：/sys/user 嵌套百度：http://www.baidu.com 嵌套网页：http://127.0.0.1:8000</p>
                 </div>
-                <i class="el-icon-warning"/>
+                <i class="el-icon-warning" />
               </el-tooltip>
             </el-col>
           </el-row>
@@ -177,7 +177,7 @@
               />
             </el-col>
             <el-col :span="2" class="icon-list__tips">
-              <fa-icon-tooltip/>
+              <fa-icon-tooltip />
             </el-col>
           </el-row>
         </el-form-item>
@@ -191,11 +191,11 @@
 </template>
 
 <script>
-import KtButton from "@/views/Core/KtButton";
-import TableTreeColumn from "@/views/Core/TableTreeColumn";
-import PopupTreeInput from "@/components/PopupTreeInput";
-import FaIconTooltip from "@/components/FaIconTooltip";
-import { findMenuTree, save, batchDelete } from "@/api/menu.js";
+import KtButton from '@/views/Core/KtButton'
+import TableTreeColumn from '@/views/Core/TableTreeColumn'
+import PopupTreeInput from '@/components/PopupTreeInput'
+import FaIconTooltip from '@/components/FaIconTooltip'
+import { findMenuTree, save, batchDelete } from '@/api/menu.js'
 import request from '@/utils/request'
 export default {
   components: {
@@ -206,141 +206,140 @@ export default {
   },
   data() {
     return {
-      size: "small",
+      size: 'small',
       loading: false,
       filters: {
-        name: ""
+        name: ''
       },
       tableTreeDdata: [],
       dialogVisible: false,
-      menuTypeList: ["目录", "菜单", "按钮"],
+      menuTypeList: ['目录', '菜单', '按钮'],
       dataForm: {
         id: 0,
         type: 1,
-        name: "",
+        name: '',
         parentId: 0,
-        parentName: "",
-        url: "",
-        perms: "",
+        parentName: '',
+        url: '',
+        perms: '',
         orderNum: 0,
-        icon: "",
+        icon: '',
         iconList: []
       },
       dataRule: {
-        name: [{ required: true, message: "菜单名称不能为空", trigger: "blur" }]
+        name: [{ required: true, message: '菜单名称不能为空', trigger: 'blur' }]
       },
       popupTreeData: [],
       popupTreeProps: {
-        label: "name",
-        children: "children"
+        label: 'name',
+        children: 'children'
       }
-    };
+    }
   },
   mounted() {
-    this.findTreeData();
+    this.findTreeData()
   },
   methods: {
     // 获取数据
     findTreeData: function() {
-      this.loading = true;
+      this.loading = true
       findMenuTree().then(res => {
-        this.tableTreeDdata = res.data;
-        this.popupTreeData = this.getParentMenuTree(res.data);
-        this.loading = false;
+        this.tableTreeDdata = res.data
+        this.popupTreeData = this.getParentMenuTree(res.data)
+        this.loading = false
       })
     },
     // 获取上级菜单树
     getParentMenuTree: function(tableTreeDdata) {
       const parent = {
         parentId: 0,
-        name: "顶级菜单",
+        name: '顶级菜单',
         children: tableTreeDdata
-      };
+      }
       return [parent]
     },
     // 显示新增界面
     handleAdd: function() {
-      this.dialogVisible = true;
+      this.dialogVisible = true
       this.dataForm = {
         id: 0,
         type: 1,
-        typeList: ["目录", "菜单", "按钮"],
-        name: "",
+        typeList: ['目录', '菜单', '按钮'],
+        name: '',
         parentId: 0,
-        parentName: "",
-        url: "",
-        perms: "",
+        parentName: '',
+        url: '',
+        perms: '',
         orderNum: 0,
-        icon: "",
+        icon: '',
         iconList: []
-      };
+      }
     },
     // 显示编辑界面
     handleEdit: function(row) {
-      this.dialogVisible = true;
-      Object.assign(this.dataForm, row);
+      this.dialogVisible = true
+      Object.assign(this.dataForm, row)
     },
     // 删除
     handleDelete(row) {
-      
-      this.$confirm("确认删除选中记录吗？", "提示", {
-        type: "warning"
+      this.$confirm('确认删除选中记录吗？', '提示', {
+        type: 'warning'
       }).then(() => {
         this.loading = true
-        let params = this.getDeleteIds([], row);
+        const params = this.getDeleteIds([], row)
         batchDelete(params).then(res => {
-          this.findTreeData();
-          this.$message({ message: "删除成功", type: "success" });
+          this.findTreeData()
+          this.$message({ message: '删除成功', type: 'success' })
           this.loading = false
-        });
-      });
+        })
+      })
     },
     // 获取删除的包含子菜单的id列表
     getDeleteIds(ids, row) {
-      ids.push({ id: row.id });
+      ids.push({ id: row.id })
       if (row.children != null) {
         for (let i = 0, len = row.children.length; i < len; i++) {
-          this.getDeleteIds(ids, row.children[i]);
+          this.getDeleteIds(ids, row.children[i])
         }
       }
-      return ids;
+      return ids
     },
     // 菜单树选中
     handleTreeSelectChange(data, node) {
-      this.dataForm.parentId = data.id;
-      this.dataForm.parentName = data.name;
+      this.dataForm.parentId = data.id
+      this.dataForm.parentName = data.name
     },
     // 图标选中
     iconActiveHandle(iconName) {
-      this.dataForm.icon = iconName;
+      this.dataForm.icon = iconName
     },
     // 表单提交
     submitForm() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            this.editLoading = true;
-            let params = Object.assign({}, this.dataForm);
+          this.$confirm('确认提交吗？', '提示', {}).then(() => {
+            this.editLoading = true
+            const params = Object.assign({}, this.dataForm)
             save(params).then(res => {
-              this.editLoading = false;
+              this.editLoading = false
               if (res.status === 200) {
-                this.$message({ message: "操作成功", type: "success" });
-                this.$refs["dataForm"].resetFields();
-                this.dialogVisible = false;
+                this.$message({ message: '操作成功', type: 'success' })
+                this.$refs['dataForm'].resetFields()
+                this.dialogVisible = false
               } else {
                 this.$message({
-                  message: "操作失败, " + res.msg,
-                  type: "error"
-                });
+                  message: '操作失败, ' + res.msg,
+                  type: 'error'
+                })
               }
-              this.findTreeData();
-            });
-          });
+              this.findTreeData()
+            })
+          })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>
