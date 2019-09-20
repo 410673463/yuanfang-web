@@ -9,7 +9,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/views/layout/Layout'
 // sys
-import sys from './sys/sys'
+//import sys from './sys/sys'
 /* Router Modules */
 
 /** note: sub-menu only appear when children.length>=1

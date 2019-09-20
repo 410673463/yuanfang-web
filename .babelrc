@@ -1,4 +1,4 @@
 {
   "presets":  ["@babel/preset-react", "@babel/preset-env"],
-  "plugins": ["transform-vue-jsx", "@babel/plugin-transform-runtime"]
+  "plugins": ["transform-vue-jsx", "@babel/plugin-transform-runtime","dynamic-import-node"]
 }
